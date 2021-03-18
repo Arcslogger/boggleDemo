@@ -22,10 +22,10 @@ import java.io.FileReader;
 import java.util.HashSet;
 
 class boggleBoard {
-
+    private static final int R = 3, C = 3;
     private static HashSet<String> valid = new HashSet<String>(), wordList = new HashSet <String> (110000);
-    private static String [][] board = new String[6][6];
-
+    private static String [][] board = new String[R][C];
+    private static boolean [][] vis = new boolean [R][C];
     public boggleBoard() {
         openFile();
     }
@@ -41,8 +41,8 @@ class boggleBoard {
         }
     }
     void generateBoard () {
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[i].length; j++) {
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < C; j++) {
                 String rand = Character.toString((char) ((int) (Math.random() * 26) + 65));
                 board[i][j] = rand;
             }
@@ -50,28 +50,32 @@ class boggleBoard {
         findValid();
     }
     void findValid () {
-        for(int i = 0; i < 6; i++) {
-            for(int j = 0; j < 6; j++) {
-                boolean [][] vis = new boolean[board.length][board[i].length];
-                String s = "";
-                dfs(i, j, s, vis);
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < C; j++) {
+                dfs(i, j, "");
             }
         }
     }
-    void dfs (int r, int c, String total, boolean [][] vis) {
+    void dfs (int r, int c, String total) {
         total += board[r][c];
+        //System.out.println(total);
         vis[r][c] = true;
         if(wordList.contains(total.toLowerCase())) valid.add(total);
-        for(int i = Math.max(r - 1, 0); i < Math.min(r + 2, vis.length); i++) {
-            for(int j = Math.max(c - 1, 0); j < Math.min(c + 2, vis[0].length); j++) {
-                if(!vis[i][j]) dfs(i, j, total, vis);
+        for(int i = Math.max(r - 1, 0); i < Math.min(r + 2, R); i++) {
+            for(int j = Math.max(c - 1, 0); j < Math.min(c + 2, C); j++) {
+                if(!vis[i][j]) dfs(i, j, total);
             }
         }
+        total = "" + total.charAt(total.length() - 1);
+        vis[r][c] = false;
     }
     boolean isValid (String s) {
-        return valid.contains(s);
+        return (valid.contains(s.toLowerCase()) || valid.contains(s.toUpperCase()));
     }
     String [][] getBoard () {
         return board;
+    }
+    HashSet <String> getValid () {
+        return valid;
     }
 }
