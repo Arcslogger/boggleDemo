@@ -1,24 +1,54 @@
-public class boggleGUI {
+import com.sun.xml.internal.ws.api.client.WSPortInfo;
 
-    public static void main(String[] args) {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-        boggleBoard board = new boggleBoard();
-        board.generateBoard();
-        String [][] test = board.getBoard();
-        for(int i = 0; i < 6; i++) {
-            for(int j = 0; j < 6; j++) {
-                System.out.print(test[i][j] + " ");
-            }
-            System.out.println();
-        }
-//            for(int i = 0; i < 6; i++) {
-//                for(int j = 0; j < 6; j++) {
-//                    boolean [][] vis = new boolean[board.length][board[i].length];
-//                    String s = "";
-//                    dfs(i, j, s, vis);
-//                }
-//            }
-//            System.out.println(valid.toString());
+public class boggleGUI extends JFrame implements ActionListener {
+
+    static String [][] dice;
+    static StringBuilder entered = new StringBuilder(36);
+
+    JPanel uiPanel = new JPanel();
+    static JFrame frame = new JFrame();
+
+    public boggleGUI (boggleBoard board) {
+        //just use a fucking jTextField man
+        //not that deep
+        frame.setTitle("Boggle Game");
+        frame.setSize(800, 600);
+
+        FlowLayout test = new FlowLayout();
+        frame.setLayout(test);
+
+        dice = board.getBoard();
+
+        int ROW = dice.length, COL = dice[0].length;
+
+        FlowLayout uiLayout = new FlowLayout();
+        uiPanel.setLayout(uiLayout);
+
+        JButton check = new JButton("check");
+        check.addActionListener(e -> {
+            System.out.println(entered.toString());
+            System.out.println(board.isValid(entered.toString()));
+            entered = new StringBuilder(36);
+        });
+
+        uiPanel.add(check);
+        frame.add(uiPanel);
+        frame.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        boggleBoard board = new boggleBoard ();
+        board.generateBoard();
+        new boggleGUI(board);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
