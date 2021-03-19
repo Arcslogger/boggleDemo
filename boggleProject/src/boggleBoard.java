@@ -46,6 +46,16 @@ public class boggleBoard {
             }
         }
     }
+//    private boolean searchDir (int r, int c, String val) {
+//        if(val.length() == 1 && board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0)))) return true;
+//        for(coord dir : directions) {
+//            int dirR = dir.r;
+//            int dirC = dir.c;
+//            if(board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0))) && r + dirR < R && r + dirR >= 0 && c + dirC < C && c + dirC >= 0)
+//                return searchDir(r + dirR, c + dirC, val.substring(1));
+//        }
+//        return false;
+//    }
     private boolean searchDir (int r, int c, int dirR, int dirC, String val) {
         if(val.length() == 1 && board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0)))) return true;
         if(board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0))) && r + dirR < R && r + dirR >= 0 && c + dirC < C && c + dirC >= 0)
@@ -56,6 +66,7 @@ public class boggleBoard {
         for(int r = 0; r < R; r++) {
             for(int c = 0; c < C; c++)
                 for(coord dir : directions)
+                    //if(searchDir(r, c, val) && wordList.contains(val.toLowerCase())) return true;
                     if(searchDir(r, c, dir.r, dir.c, val) && wordList.contains(val.toLowerCase()))  return true;
         }
         return false;
@@ -63,4 +74,5 @@ public class boggleBoard {
     String [][] getBoard () {
         return board;
     }
+
 }
