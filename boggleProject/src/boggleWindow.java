@@ -29,10 +29,9 @@ public class boggleWindow extends JFrame {
 
         frame.getContentPane().add(input);
         frame.setVisible(true);
-        System.out.println(board.getValid().toString());
         String [][] map = board.getBoard();
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
                 System.out.print(map[i][j] + " ");
             }
             System.out.println();
@@ -41,8 +40,7 @@ public class boggleWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        boggleBoard board = new boggleBoard ();
-        board.generateBoard();
+        boggleBoard board = new boggleBoard(6, 6);
         new boggleWindow(board);
     }
 

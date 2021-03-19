@@ -1,35 +1,33 @@
-//an attempt to use DFS to find all possible valid words on a grid of randomly generated characters
-//this test is ust
-
-/*
-
-PRE-COMPUTATION OF VALID WORDS (dfs x36)
-for each of the 36 starting chars, perform DFSs
-
-when the user chooses a word:
-    keep track of all chars visited
-    the new char is valid if:
-        - char hasn't been visited
-        - char is adjacent to at least one other char (check all adj in bound neighbors (3 min, 8 max)
-
-once a full word is chosen:
-    compare word against valid word list (use hashset for fastest .contains)
- */
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 
-class boggleBoard {
-    private static final int R = 3, C = 3;
-    private static HashSet<String> valid = new HashSet<String>(), wordList = new HashSet <String> (110000);
-    private static String [][] board = new String[R][C];
-    private static boolean [][] vis = new boolean [R][C];
-    public boggleBoard() {
-        openFile();
+public class boggleBoard {
+
+    private static int R, C;
+    private static HashSet<String> wordList = new HashSet <String> (110000);
+    private static String [][] board;
+    private static ArrayList <coord> directions;
+
+    public boggleBoard (int r, int c) {
+        R = r; C = c;
+        board = new String [R][C];
+        openFile(); generateBoard();
+        directions = new ArrayList <coord> ();
+        for(int i = -1; i < 2; i++) {
+            for(int j = -1; j < 2; j++) if(i != 0 || j != 0) directions.add(new coord(i, j));
+        }
     }
-    void openFile () { //opens wordlist.txt file and transfers data into list
+    private static class coord {
+        int r, c;
+        public coord (int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
+    private void openFile () { //opens wordlist.txt file and transfers data into list
         try {
             File wordlist = new File ("wordlist.txt");
             BufferedReader br = new BufferedReader(new FileReader(wordlist));
@@ -40,42 +38,29 @@ class boggleBoard {
             System.out.println("Failed to read wordlist.txt file. Make sure file is properly formatted and the folder");
         }
     }
-    void generateBoard () {
-        for(int i = 0; i < R; i++) {
-            for(int j = 0; j < C; j++) {
+    private void generateBoard () {
+        for(int r = 0; r < R; r++) {
+            for(int c = 0; c < C; c++) {
                 String rand = Character.toString((char) ((int) (Math.random() * 26) + 65));
-                board[i][j] = rand;
-            }
-        }
-        findValid();
-    }
-    void findValid () {
-        for(int i = 0; i < R; i++) {
-            for(int j = 0; j < C; j++) {
-                dfs(i, j, "");
+                board[r][c] = rand;
             }
         }
     }
-    void dfs (int r, int c, String total) {
-        total += board[r][c];
-        //System.out.println(total);
-        vis[r][c] = true;
-        if(wordList.contains(total.toLowerCase())) valid.add(total);
-        for(int i = Math.max(r - 1, 0); i < Math.min(r + 2, R); i++) {
-            for(int j = Math.max(c - 1, 0); j < Math.min(c + 2, C); j++) {
-                if(!vis[i][j]) dfs(i, j, total);
-            }
-        }
-        total = "" + total.charAt(total.length() - 1);
-        vis[r][c] = false;
+    private boolean searchDir (int r, int c, int dirR, int dirC, String val) {
+        if(val.length() == 1 && board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0)))) return true;
+        if(board[r][c].equalsIgnoreCase(Character.toString(val.charAt(0))) && r + dirR < R && r + dirR >= 0 && c + dirC < C && c + dirC >= 0)
+            return searchDir(r + dirR, c + dirC, dirR, dirC, val.substring(1));
+        return false;
     }
-    boolean isValid (String s) {
-        return (valid.contains(s.toLowerCase()) || valid.contains(s.toUpperCase()));
+    boolean isValid (String val){
+        for(int r = 0; r < R; r++) {
+            for(int c = 0; c < C; c++)
+                for(coord dir : directions)
+                    if(searchDir(r, c, dir.r, dir.c, val) && wordList.contains(val.toLowerCase()))  return true;
+        }
+        return false;
     }
     String [][] getBoard () {
         return board;
-    }
-    HashSet <String> getValid () {
-        return valid;
     }
 }
