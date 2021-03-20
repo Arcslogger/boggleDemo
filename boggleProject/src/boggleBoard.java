@@ -41,7 +41,10 @@ public class boggleBoard {
     void generateBoard () {
         for(int r = 0; r < R; r++) {
             for(int c = 0; c < C; c++) {
-                String rand = Character.toString((char) ((int) (Math.random() * 26) + 65));
+                //https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html
+                //most commonly used letters are duplicated, with E having 3 instances as the most common letter
+                String bank = "EEARIOTNSLCUDPABCDEFGHIJKLMNOPQRSTUVQXYZ";
+                String rand = Character.toString(bank.charAt((int) (Math.random() * bank.length()))); //gets a random character from bank
                 board[r][c] = rand;
             }
         }
@@ -52,14 +55,16 @@ public class boggleBoard {
             return searchDir(r + dirR, c + dirC, dirR, dirC, val.substring(1));
         return false;
     }
-    boolean isValid (String val){
+    boolean onBoard (String val){
         for(int r = 0; r < R; r++) {
             for(int c = 0; c < C; c++)
                 for(coord dir : directions)
-                    //if(searchDir(r, c, val) && wordList.contains(val.toLowerCase())) return true;
-                    if(searchDir(r, c, dir.r, dir.c, val) && wordList.contains(val.toLowerCase()))  return true;
+                    if(searchDir(r, c, dir.r, dir.c, val))  return true;
         }
         return false;
+    }
+    boolean isValid(String val) {
+        return wordList.contains(val);
     }
     String [][] getBoard () {
         return board;
