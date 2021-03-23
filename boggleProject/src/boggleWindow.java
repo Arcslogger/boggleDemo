@@ -66,7 +66,7 @@ public class boggleWindow extends JFrame {
 
         title = new JLabel("Wib's Mind Boggling Boggle Game");
         title.setFont(new Font ("Sans Serif", Font.BOLD, 32));
-        subTitle = new JLabel("聖なるJey Anandarajanに捧ぐ (◕‿◕✿)");
+        subTitle = new JLabel(" (◕‿◕✿)");
         subTitle.setFont(new Font("Sans Serif", Font.BOLD, 16));
         subTitle.setForeground(Color.darkGray);
         enterRules = new JLabel("Enter queries into search box below. Press enter to check query.");
