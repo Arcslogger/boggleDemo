@@ -16,7 +16,7 @@ public class boggleWindow extends JFrame {
 
         frame = new JFrame("Boggle Assignment"); //initializing window and configuring properties
         frame.setSize(800, 600);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
@@ -39,7 +39,7 @@ public class boggleWindow extends JFrame {
                 String s = input.getText();
                 boolean onBoard = board.onBoard(s), isEnglish = board.isValid(s);
                 isValid.setText(onBoard ? "Possible" : "Impossible");
-                isValid.setForeground((isEnglish && onBoard) ? Color.GREEN : Color.red);
+                isValid.setForeground((isEnglish) ? Color.GREEN : Color.red);
                 boardPanel.revalidate();
                 input.setText("");
             }
