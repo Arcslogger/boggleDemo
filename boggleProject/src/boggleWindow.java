@@ -14,24 +14,26 @@ public class boggleWindow extends JFrame {
 
     public boggleWindow(boggleBoard board) throws IOException, FontFormatException {
 
-        frame = new JFrame("Boggle Assignment"); //initializing window and configuring properties
+        //initializing window and configuring properties
+        frame = new JFrame("Boggle Assignment");
         frame.setSize(800, 600);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
-
+        //initializing panels and configuring properties
         uiPanel = new JPanel(new BorderLayout(0, 20));
-        boardPanel = new JPanel(new BorderLayout(0, 0)); //new GridLayout(map.length, map[0].length)
+        boardPanel = new JPanel(new BorderLayout(0, 0));
         buttonPanel = new JPanel(new FlowLayout());
         headerPanel = new JPanel(new GridLayout(2, 1));
         footerPanel = new JPanel(new FlowLayout());
-
+        //padding and margins for each panel
         uiPanel.setBorder(BorderFactory.createEmptyBorder(100, 45, 150, 10));
         boardPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 50));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 10, 0));
         footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        input = new JTextField(); //text box for entering queries
+        //initializing panel components and configuring properties
+        input = new JTextField();
         input.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         input.addActionListener(new ActionListener() {
             @Override
@@ -63,7 +65,6 @@ public class boggleWindow extends JFrame {
                 System.exit(0);
             }
         });
-
         title = new JLabel("Wib's Mind Boggling Boggle Game");
         title.setFont(new Font ("Sans Serif", Font.BOLD, 32));
         subTitle = new JLabel(" (◕‿◕✿)");
@@ -74,13 +75,13 @@ public class boggleWindow extends JFrame {
         enterRules.setForeground(Color.lightGray);
         resultRules = new JLabel("<html><body style=\"text-align:center;\">Possible/Impossible: Valid/Invalid combination of dice respectively" +
                                         "<br>Green/Red: Valid/Invalid english word respectively<br></body></html>");
+        enterRules.setForeground(Color.lightGray);
         resultRules.setHorizontalAlignment(JTextField.CENTER);
-        enterRules.setFont(new Font("Sans Serif", Font.ITALIC, 12));
         resultRules.setForeground(Color.darkGray);
         isValid = new JLabel("");
         isValid.setHorizontalAlignment(JTextField.CENTER);
         isValid.setFont(new Font("Sans Serif", Font.BOLD, 24));
-
+        //adding components to panels
         buttonPanel.add(scramble);
         buttonPanel.add(quit);
         boardPanel.add(new boardDice(5, 5, board.getBoard()), BorderLayout.NORTH);
@@ -91,7 +92,7 @@ public class boggleWindow extends JFrame {
         headerPanel.add(title);
         headerPanel.add(subTitle);
         footerPanel.add(resultRules);
-
+        //adding panels to frame
         frame.getContentPane().add(headerPanel, BorderLayout.NORTH);
         frame.getContentPane().add(uiPanel, BorderLayout.LINE_START);
         frame.getContentPane().add(boardPanel, BorderLayout.LINE_END);
@@ -103,7 +104,7 @@ public class boggleWindow extends JFrame {
         int x, y, rowNum, colNum;
         String [][] labels;
         boardDice (int x, int y, String [][] labels) {
-            setPreferredSize(new Dimension(310, 310));
+            setPreferredSize(new Dimension(310, 310)); //set size of board component. Slightly bigger than the true board size to be safe
             this.x = x;
             this.y = y;
             this.labels = labels;
