@@ -4,16 +4,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+/**
+ *  Class contains all front-end layout/formatting. When created, it generates a window based off of the current board
+ *  @author Wilbur Zhang
+ */
+
 public class boggleWindow extends JFrame {
 
-    private static JFrame frame; //frame where everything is laid out on
-    private static JPanel uiPanel, boardPanel, buttonPanel, headerPanel, footerPanel;
-    private static JTextField input;
-    private static JButton scramble, quit;
-    private static JLabel title, subTitle, isValid, enterRules, resultRules;
+    private static JFrame frame; //main frame where everything is laid out
+    private static JPanel uiPanel, boardPanel, buttonPanel, headerPanel, footerPanel; //panels for each section of the frame
+    private static JTextField input; //gets user input
+    private static JButton scramble, quit; //buttons for settings
+    private static JLabel title, subTitle, isValid, enterRules, resultRules; //User prompts
 
     public boggleWindow(boggleBoard board) throws IOException, FontFormatException {
-
         //initializing window and configuring properties
         frame = new JFrame("Boggle Assignment");
         frame.setSize(800, 600);
@@ -36,18 +40,28 @@ public class boggleWindow extends JFrame {
         input = new JTextField();
         input.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         input.addActionListener(new ActionListener() {
+            /**
+             *  When the enter key is pressed, method gets user query from input field and checks whether it's English & on the board
+             *  Paints the appropriate for each situation and resets the input field
+             *  @param e ActionEvent created when user presses Enter
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 String s = input.getText();
                 boolean onBoard = board.onBoard(s), isEnglish = board.isValid(s);
                 isValid.setText(onBoard ? "Possible" : "Impossible");
                 isValid.setForeground((isEnglish) ? Color.GREEN : Color.red);
-                boardPanel.revalidate();
                 input.setText("");
+                boardPanel.revalidate();
             }
         });
         scramble = new JButton("Scramble board");
+
         scramble.addActionListener(new ActionListener() {
+            /**
+             *  Generates a new board layout when the scramble button is pressed. Resets input/ui and refreshes the panel
+             *  @param e ActionEvent created when user presses scramble button
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 board.generateBoard();
@@ -59,15 +73,20 @@ public class boggleWindow extends JFrame {
         });
         quit = new JButton("Exit demo");
         quit.addActionListener(new ActionListener() {
+            /**
+             *  Terminates program when quit button is pressed
+             *  @param e ActionEvent created when user presses scramble button
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("User has terminated program.");
                 System.exit(0);
             }
         });
+        //initializing text components for user prompts
         title = new JLabel("Wib's Mind Boggling Boggle Game");
         title.setFont(new Font ("Sans Serif", Font.BOLD, 32));
-        subTitle = new JLabel(" (◕‿◕✿)");
+        subTitle = new JLabel("<html>Find words that exist either vertically, horizontally, or diagonally<br>All characters need to be in the same direction<html>");
         subTitle.setFont(new Font("Sans Serif", Font.BOLD, 16));
         subTitle.setForeground(Color.darkGray);
         enterRules = new JLabel("Enter queries into search box below. Press enter to check query.");
@@ -97,12 +116,22 @@ public class boggleWindow extends JFrame {
         frame.getContentPane().add(uiPanel, BorderLayout.LINE_START);
         frame.getContentPane().add(boardPanel, BorderLayout.LINE_END);
         frame.getContentPane().add(footerPanel, BorderLayout.SOUTH);
+        //finally, show panel to user
         frame.setVisible(true);
     }
-
+    /**
+     *  The graphical component of the GUI painting the board as a grid of dice with labels on top
+     */
     private static class boardDice extends JComponent {
         int x, y, rowNum, colNum;
         String [][] labels;
+
+        /**
+         * Creates a board that starts with the top left corner at specified coordinates
+         * @param x         x-coordinate of top left corner
+         * @param y         y-coordinate of top left corner
+         * @param labels    values to be shown on the face of all 36 dice
+         */
         boardDice (int x, int y, String [][] labels) {
             setPreferredSize(new Dimension(310, 310)); //set size of board component. Slightly bigger than the true board size to be safe
             this.x = x;
@@ -111,6 +140,11 @@ public class boggleWindow extends JFrame {
             rowNum = labels.length;
             colNum = labels[0].length;
         }
+
+        /**
+         *  Paints the die at the specified coordinates and labels them with the values of the current board
+         *  @param g used to paint all the sections of the board
+         */
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
@@ -119,8 +153,7 @@ public class boggleWindow extends JFrame {
             g2.setStroke(new BasicStroke(5));
             g2.drawRoundRect(x-2, y-2, 304, 304, 15, 15);
             //set the font for the dice
-            Font font = new Font("Helvetica", Font.BOLD, 18);
-            g2.setFont(font);
+            g2.setFont(new Font("Helvetica", Font.BOLD, 18));
             //paint each of the 36 dice
             g2.setStroke(new BasicStroke(1));
             for(int r = 0; r < rowNum; r++) {
@@ -138,8 +171,14 @@ public class boggleWindow extends JFrame {
             }
         }
     }
+    /**
+     * Executes the app by creating the board logic and GUI interface
+     * @param args                  supplied command line arguments as a String array of objects
+     * @throws IOException          results from using BufferedReader to parse file
+     * @throws FontFormatException  results from using GUI fonts
+     */
     public static void main(String[] args) throws IOException, FontFormatException {
-        boggleBoard board = new boggleBoard(6, 6);
-        new boggleWindow(board);
+        boggleBoard board = new boggleBoard(6, 6); //create a new board with 6 rows and 6 columns
+        new boggleWindow(board); //create game window using the board
     }
 }
