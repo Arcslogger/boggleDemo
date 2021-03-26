@@ -172,6 +172,11 @@ public class boggleWindow extends JFrame {
         }
         /**
          *  Paints the die at the specified coordinates and labels them with the values of the current board.
+         *
+         *  List of Local Variables:
+         *  r   loops through all the rows of the board grid </type int>
+         *  c   loops through all the columns of the board grid </type int>
+         *
          *  @param g used to paint all the sections of the board
          */
         @Override
