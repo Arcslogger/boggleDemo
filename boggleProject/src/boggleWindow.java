@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 /**
- *  Class contains all front-end layout/formatting. When created, it generates a window based off of the current board
+ *  Contains all front-end layout/formatting. When created, it generates a window based off of the current board.
  *  @author Wilbur Zhang
+ *  @version 1.0
+ *  @since 2021-03-25
  */
 
 public class boggleWindow extends JFrame {
@@ -34,15 +36,15 @@ public class boggleWindow extends JFrame {
         //padding and margins for each panel
         uiPanel.setBorder(BorderFactory.createEmptyBorder(100, 45, 150, 10));
         boardPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 50));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 10, 0));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 5, 0));
         footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         //initializing panel components and configuring properties
         input = new JTextField();
-        input.setFont(new Font("Sans Serif", Font.PLAIN, 16));
+        input.setFont(new Font("Helvetica", Font.PLAIN, 16));
         input.addActionListener(new ActionListener() {
             /**
-             *  When the enter key is pressed, method gets user query from input field and checks whether it's English & on the board
-             *  Paints the appropriate for each situation and resets the input field
+             *  Gets user query from input field and checks whether it's English & on the board.
+             *  Paints the appropriate for each situation and resets the input field.
              *  @param e ActionEvent created when user presses Enter
              */
             @Override
@@ -59,8 +61,8 @@ public class boggleWindow extends JFrame {
 
         scramble.addActionListener(new ActionListener() {
             /**
-             *  Generates a new board layout when the scramble button is pressed. Resets input/ui and refreshes the panel
-             *  @param e ActionEvent created when user presses scramble button
+             *  Generates a new board layout when the scramble button is pressed. Resets input/ui and refreshes the panel.
+             *  @param e ActionEvent created when user presses scramble button.
              */
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,8 +76,8 @@ public class boggleWindow extends JFrame {
         quit = new JButton("Exit demo");
         quit.addActionListener(new ActionListener() {
             /**
-             *  Terminates program when quit button is pressed
-             *  @param e ActionEvent created when user presses scramble button
+             *  Terminates program when quit button is pressed.
+             *  @param e ActionEvent created when user presses scramble button.
              */
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,21 +87,20 @@ public class boggleWindow extends JFrame {
         });
         //initializing text components for user prompts
         title = new JLabel("Wib's Mind Boggling Boggle Game");
-        title.setFont(new Font ("Sans Serif", Font.BOLD, 32));
+        title.setFont(new Font ("Helvetica", Font.BOLD, 32));
         subTitle = new JLabel("<html>Find words that exist either vertically, horizontally, or diagonally<br>All characters need to be in the same direction<html>");
-        subTitle.setFont(new Font("Sans Serif", Font.BOLD, 16));
+        subTitle.setFont(new Font("Helvetica", Font.BOLD, 16));
         subTitle.setForeground(Color.darkGray);
         enterRules = new JLabel("Enter queries into search box below. Press enter to check query.");
-        enterRules.setFont(new Font("Sans Serif", Font.ITALIC, 12));
+        enterRules.setFont(new Font("Helvetica", Font.ITALIC, 12));
         enterRules.setForeground(Color.lightGray);
-        resultRules = new JLabel("<html><body style=\"text-align:center;\">Possible/Impossible: Valid/Invalid combination of dice respectively" +
-                                        "<br>Green/Red: Valid/Invalid english word respectively<br></body></html>");
+        resultRules = new JLabel("<html><body style=\"text-align:center;\">Possible/Impossible: Valid/Invalid combination of dice respectively<br>Green/Red: Valid/Invalid english word respectively<br></body></html>");
         enterRules.setForeground(Color.lightGray);
         resultRules.setHorizontalAlignment(JTextField.CENTER);
         resultRules.setForeground(Color.darkGray);
         isValid = new JLabel("");
         isValid.setHorizontalAlignment(JTextField.CENTER);
-        isValid.setFont(new Font("Sans Serif", Font.BOLD, 24));
+        isValid.setFont(new Font("Helvetica", Font.BOLD, 24));
         //adding components to panels
         buttonPanel.add(scramble);
         buttonPanel.add(quit);
@@ -120,14 +121,14 @@ public class boggleWindow extends JFrame {
         frame.setVisible(true);
     }
     /**
-     *  The graphical component of the GUI painting the board as a grid of dice with labels on top
+     *  A graphical representation of the board as a grid of dice with labels on top.
      */
     private static class boardDice extends JComponent {
         int x, y, rowNum, colNum;
         String [][] labels;
 
         /**
-         * Creates a board that starts with the top left corner at specified coordinates
+         * Class constructor creates a board starting at top left corner at specified coordinates.
          * @param x         x-coordinate of top left corner
          * @param y         y-coordinate of top left corner
          * @param labels    values to be shown on the face of all 36 dice
@@ -142,7 +143,7 @@ public class boggleWindow extends JFrame {
         }
 
         /**
-         *  Paints the die at the specified coordinates and labels them with the values of the current board
+         *  Paints the die at the specified coordinates and labels them with the values of the current board.
          *  @param g used to paint all the sections of the board
          */
         @Override
@@ -172,10 +173,10 @@ public class boggleWindow extends JFrame {
         }
     }
     /**
-     * Executes the app by creating the board logic and GUI interface
-     * @param args                  supplied command line arguments as a String array of objects
-     * @throws IOException          results from using BufferedReader to parse file
-     * @throws FontFormatException  results from using GUI fonts
+     * Executes the app by creating the board logic and GUI interface.
+     * @param args                  supplied command line arguments as a string array of objects
+     * @throws IOException          if wordlist file can't be found or if improperly formatted
+     * @throws FontFormatException  if a font created can't be accepted
      */
     public static void main(String[] args) throws IOException, FontFormatException {
         boggleBoard board = new boggleBoard(6, 6); //create a new board with 6 rows and 6 columns

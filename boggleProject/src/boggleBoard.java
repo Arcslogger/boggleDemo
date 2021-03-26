@@ -1,13 +1,16 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- *  Class contains all back-end logic for the boggle game. When an instance is created, a new board is generated with given dimensions
- *  and can be used to check if any word is valid english/exists on the board
+ *  This class contains all back-end logic for the boggle demo. When an instance is created, a new board is generated with given dimensions
+ *  and can be used to check if any word is valid english/exists on the board.
  *  @author Wilbur Zhang
+ *  @version 1.0
+ *  @since 2021-03-25
  */
 public class boggleBoard {
 
@@ -16,15 +19,15 @@ public class boggleBoard {
     private static String [][] board; //values of all dice on current board
     private static ArrayList <coord> directions; //list of all possible directions to search for a word
     /**
-     *  Represents a pair of numbers, one showing row movements and one showing col movements
-     *  used to describe all possible directions when searching
+     *  Represents a pair of numbers, one showing row movements and one showing column movements/
+     *  Used to describe all possible directions when searching.
      */
     private static class coord {
         int r, c;
         /**
-         * Creates a coordinate pair with a specified row and col movement
-         * @param r Integer representing row movement
-         * @param c Integer representing col movement
+         * Creates a coordinate pair with a specified row and column value.
+         * @param r integer representing row value
+         * @param c integer representing column value
          */
         public coord (int r, int c) {
             this.r = r;
@@ -32,9 +35,9 @@ public class boggleBoard {
         }
     }
     /**
-     *  Constructor initializes static level variables and creates a game board
-     *  @param r    Integer representing number of rows on the board
-     *  @param c    Integer representing number of columns on the board
+     *  Constructor initializes static level variables and creates a game board.
+     *  @param r    integer representing number of rows on the board
+     *  @param c    integer representing number of columns on the board
      */
     public boggleBoard (int r, int c) {
         R = r; C = c;
@@ -57,12 +60,12 @@ public class boggleBoard {
     }
 
     /**
-     *  Reads each entry in the file of valid english words and transfers them into a hashset of String objects
+     *  Reads each entry in the file of valid english words and transfers them into a hashset of String objects.
      */
     private void openFile () { //opens wordlist.txt file and transfers data into list
         try {
-            File wordlist = new File ("wordlist.txt"); //get file from path
-            BufferedReader br = new BufferedReader(new FileReader(wordlist)); //create a buffered reader to read in the file
+            //create a buffered reader to read in the file
+            BufferedReader br = new BufferedReader(new BufferedReader (new InputStreamReader(boggleBoard.class.getResourceAsStream("wordlist.txt"))));
             String in; //current string read by buffered reader
             while((in = br.readLine()) != null) wordList.add(in); //read in a word and store it into the list and stop when the end (null) is reached
         } catch (Exception E) { //runs when an error occurs attempting to read file
@@ -71,7 +74,7 @@ public class boggleBoard {
     }
     /**
      *  Selects a random latin character for each of the 36 dice on the grid. RNG is weighted to favour more commonly used words.
-     *  Some vowels are not weighted heavily due to their infrequent use
+     *  Some vowels are not weighted heavily due to their infrequent use.
      *  Refer to: www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html for most commonly used characters
      */
     void generateBoard () {
@@ -84,13 +87,13 @@ public class boggleBoard {
         }
     }
     /**
-     *  Recursively searches whether a queried word can be created from the characters on the board at a certain starting position & direction
-     *  @param r    Integer representing row index of current character being inspected
-     *  @param c    Integer representing col index of current character being inspected
-     *  @param dirR Integer representing direction of the next row searched (-1 = up, 1 = down, 0 = no movement)
-     *  @param dirC Integer representing direction of the next col searched (-1 = up, 1 = down, 0 = no movement)
-     *  @param val  String representing the word currently being searched for
-     *  @return     Boolean indicating whether the word can be created or not from the position & direction (true = possible & vice versa)
+     *  Recursively searches whether a queried word can be created from the characters on the board at a certain starting position & direction.
+     *  @param r    integer representing row index of current character being inspected
+     *  @param c    integer representing col index of current character being inspected
+     *  @param dirR integer representing direction of the next row searched (-1 = up, 1 = down, 0 = no movement)
+     *  @param dirC integer representing direction of the next col searched (-1 = up, 1 = down, 0 = no movement)
+     *  @param val  string representing the word currently being searched for
+     *  @return     boolean indicating whether the word can be created or not from the position & direction (true = possible & vice versa)
      */
     private boolean searchDir (int r, int c, int dirR, int dirC, String val) {
         //base case: last character is reached and matches grid
@@ -103,9 +106,9 @@ public class boggleBoard {
     }
     /**
      *  Searches whether a queried word can be created from any position and direction. Checks every possible position/direction combination
-     *  and calls the recursive search to find whether the word can be created from that combination
-     *  @param val  String representing the word currently being searched for
-     *  @return     Boolean indicating whether the word can be created or not (true = possible & vice versa)
+     *  and calls the recursive search to find whether the word can be created from that combination.
+     *  @param val  string representing the word currently being searched for
+     *  @return     boolean indicating whether the word can be created or not (true = possible & vice versa)
      */
     boolean onBoard (String val){
         for(int r = 0; r < R; r++) //loop through every row
@@ -115,15 +118,15 @@ public class boggleBoard {
         return false; //if all combinations fail, then query cannot be created using our boggle grid
     }
     /**
-     *  Checks if a queried String is a valid english word
-     *  @param val  String representing the word currently being searched for
-     *  @return     Boolean indicating whether the word is english (true = valid & vise versa)
+     *  Checks if a queried String is a valid english word.
+     *  @param val  string representing the word currently being searched for
+     *  @return     boolean indicating whether the word is english (true = valid & vise versa)
      */
     boolean isValid(String val) {
         return wordList.contains(val);
     }
     /**
-     *  Returns the values of all 36 dice
+     *  Returns the values of all 36 dice.
      *  @return  2D array containing all 36 dice values
      */
     String [][] getBoard () {
