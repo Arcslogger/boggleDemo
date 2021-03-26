@@ -1,3 +1,29 @@
+/*==============================================================================
+ Boggle Demo
+ Wilbur Zhang
+ March 26 2021
+ Java - version 1.8.0
+
+ Class containing all front-end layout/formatting. When created, it creates a window based off of the current board
+
+ List of global variables:
+ frame - JFrame where everything is laid out
+ uiPanel - JPanel containing all intractable swing components; left side of the window
+ boardPanel - JPanel containing the boggle board along with outputted results; right side of the window
+ buttonPanel - JPanel containing all the button components; bottom of uiPanel
+ headerPanel - JPanel containing the title and subtitle; top of window
+ footerPanel - JPanel containing some user prompts; bottom of window
+ input - JTextField used by user to enter queries
+ scramble - button used to generate a new board
+ quit - JButton used to exit the program
+ title - JLabel containing the title text of the demo
+ subTitle - JLabel containing some user prompts below the main title
+ isValid - JLabel used to output whether the word entered is valid english/on the board
+ enterRules - JLabel explaining how to enter a query
+ resultRules - JLabel explaining how to interpret code output
+================================================================================
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -5,7 +31,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 /**
- *  Contains all front-end layout/formatting. When created, it generates a window based off of the current board.
+ *  Refer to above for class description and global variable list
  *  @author Wilbur Zhang
  *  @version 1.0
  *  @since 2021-03-25
@@ -13,11 +39,11 @@ import java.io.IOException;
 
 public class boggleWindow extends JFrame {
 
-    private static JFrame frame; //main frame where everything is laid out
-    private static JPanel uiPanel, boardPanel, buttonPanel, headerPanel, footerPanel; //panels for each section of the frame
-    private static JTextField input; //gets user input
-    private static JButton scramble, quit; //buttons for settings
-    private static JLabel title, subTitle, isValid, enterRules, resultRules; //User prompts
+    private static JFrame frame;
+    private static JPanel uiPanel, boardPanel, buttonPanel, headerPanel, footerPanel;
+    private static JTextField input;
+    private static JButton scramble, quit;
+    private static JLabel title, subTitle, isValid, enterRules, resultRules;
 
     public boggleWindow(boggleBoard board) throws IOException, FontFormatException {
         //initializing window and configuring properties
@@ -45,6 +71,10 @@ public class boggleWindow extends JFrame {
             /**
              *  Gets user query from input field and checks whether it's English & on the board.
              *  Paints the appropriate for each situation and resets the input field.
+             *
+             *  List of Local Variables:
+             *  s   value of the input entered by user </type String>
+             *
              *  @param e ActionEvent created when user presses Enter
              */
             @Override
@@ -126,7 +156,6 @@ public class boggleWindow extends JFrame {
     private static class boardDice extends JComponent {
         int x, y, rowNum, colNum;
         String [][] labels;
-
         /**
          * Class constructor creates a board starting at top left corner at specified coordinates.
          * @param x         x-coordinate of top left corner
@@ -141,7 +170,6 @@ public class boggleWindow extends JFrame {
             rowNum = labels.length;
             colNum = labels[0].length;
         }
-
         /**
          *  Paints the die at the specified coordinates and labels them with the values of the current board.
          *  @param g used to paint all the sections of the board
@@ -174,6 +202,10 @@ public class boggleWindow extends JFrame {
     }
     /**
      * Executes the app by creating the board logic and GUI interface.
+     *
+     * List of Local Variables:
+     * board    contains all back end data and processing for the current instance of the program </type boggleBoard>
+     *
      * @param args                  supplied command line arguments as a string array of objects
      * @throws IOException          if wordlist file can't be found or if improperly formatted
      * @throws FontFormatException  if a font created can't be accepted

@@ -1,25 +1,40 @@
+/*==============================================================================
+ Boggle Demo
+ Wilbur Zhang
+ March 26 2021
+ Java - version 1.8.0
+
+ GUI class contains all back-end logic for the boggle demo. When an instance is created, a new board is generated with given dimensions
+ and can be used to check if any word is valid english/exists on the board.
+
+ List of global variables:
+ R - integer representing number of rows of the board
+ C - integer representing number of columns of the board
+ wordlist - hashset containing list of all valid english words
+ board - 2d string array containing values of all dice on current board
+ directions - arraylist of coord objects containing all possible directions to search for a word
+================================================================================
+ */
+
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- *  This class contains all back-end logic for the boggle demo. When an instance is created, a new board is generated with given dimensions
- *  and can be used to check if any word is valid english/exists on the board.
+ *  Refer to above for class description and global variable list
  *  @author Wilbur Zhang
  *  @version 1.0
- *  @since 2021-03-25
+ *  @since 2021-03-26
  */
 public class boggleBoard {
 
-    private static int R, C; //number of rows and columns of the board
-    private static HashSet<String> wordList = new HashSet <String> (110000); //list of all valid english words
-    private static String [][] board; //values of all dice on current board
-    private static ArrayList <coord> directions; //list of all possible directions to search for a word
+    private static int R, C;
+    private static HashSet<String> wordList = new HashSet <String> (110000);
+    private static String [][] board;
+    private static ArrayList <coord> directions;
     /**
-     *  Represents a pair of numbers, one showing row movements and one showing column movements/
+     *  Represents a pair of numbers, one showing row movements and one showing column movements
      *  Used to describe all possible directions when searching.
      */
     private static class coord {
@@ -51,6 +66,10 @@ public class boggleBoard {
      *  -1  = up(row)/left(col)
      *  1   = down(row)/right(col)
      *  0   = no movement
+     *
+     *  List of Local Variables:
+     *  i   loops through all directions for row </type int>
+     *  j   loops through all directions for col </type int>
      */
     private void generateDir() {
         for(int i = -1; i < 2; i++) { //all directions for row
@@ -58,17 +77,20 @@ public class boggleBoard {
                 if(i != 0 || j != 0) directions.add(new coord(i, j)); //adds direction as long as its not 0, 0 (which results in no movement)
         }
     }
-
     /**
      *  Reads each entry in the file of valid english words and transfers them into a hashset of String objects.
+     *
+     *  List of Local Variables:
+     *  br  used to read in file </type BufferedReader>
+     *  in  current string read by buffered reader </type String>
+     *  E   exception thrown when file cannot be read </type Exception>
      */
     private void openFile () { //opens wordlist.txt file and transfers data into list
         try {
-            //create a buffered reader to read in the file
             BufferedReader br = new BufferedReader(new BufferedReader (new InputStreamReader(boggleBoard.class.getResourceAsStream("wordlist.txt"))));
-            String in; //current string read by buffered reader
+            String in;
             while((in = br.readLine()) != null) wordList.add(in); //read in a word and store it into the list and stop when the end (null) is reached
-        } catch (Exception E) { //runs when an error occurs attempting to read file
+        } catch (Exception E) {
             System.out.println("Failed to read wordlist.txt file. Make sure file is properly formatted and in the same folder as this program");
         }
     }
@@ -76,6 +98,10 @@ public class boggleBoard {
      *  Selects a random latin character for each of the 36 dice on the grid. RNG is weighted to favour more commonly used words.
      *  Some vowels are not weighted heavily due to their infrequent use.
      *  Refer to: www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html for most commonly used characters
+     *
+     *  List of Local Variables:
+     *  bank    Contains all characters that can be generated. Duplicate chars are more commonly used thus have higher weight </type String>
+     *  rand    A value from a random index within the bank </type String>
      */
     void generateBoard () {
         for(int r = 0; r < R; r++) {
@@ -107,13 +133,18 @@ public class boggleBoard {
     /**
      *  Searches whether a queried word can be created from any position and direction. Checks every possible position/direction combination
      *  and calls the recursive search to find whether the word can be created from that combination.
+     *
+     *  List of Local Variables:
+     *  r   loops through every row of the board </type int>
+     *  c   loops through every column of the board </type int>
+     *  dir loops through every possible direction direction (UDLR + diagonals) </type int>
      *  @param val  string representing the word currently being searched for
      *  @return     boolean indicating whether the word can be created or not (true = possible & vice versa)
      */
     boolean onBoard (String val){
-        for(int r = 0; r < R; r++) //loop through every row
-            for(int c = 0; c < C; c++) //loop through ever column
-                for(coord dir : directions) //try out every possible direction (UDLR + diagonals)
+        for(int r = 0; r < R; r++)
+            for(int c = 0; c < C; c++)
+                for(coord dir : directions)
                     if(searchDir(r, c, dir.r, dir.c, val)) return true; //we found the word at the current location & direction
         return false; //if all combinations fail, then query cannot be created using our boggle grid
     }
