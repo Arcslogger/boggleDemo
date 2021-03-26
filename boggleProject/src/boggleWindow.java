@@ -7,20 +7,20 @@
  Class containing all front-end layout/formatting. When created, it creates a window based off of the current board
 
  List of global variables:
- frame - JFrame where everything is laid out
- uiPanel - JPanel containing all intractable swing components; left side of the window
- boardPanel - JPanel containing the boggle board along with outputted results; right side of the window
- buttonPanel - JPanel containing all the button components; bottom of uiPanel
- headerPanel - JPanel containing the title and subtitle; top of window
- footerPanel - JPanel containing some user prompts; bottom of window
- input - JTextField used by user to enter queries
- scramble - button used to generate a new board
- quit - JButton used to exit the program
- title - JLabel containing the title text of the demo
- subTitle - JLabel containing some user prompts below the main title
- isValid - JLabel used to output whether the word entered is valid english/on the board
- enterRules - JLabel explaining how to enter a query
- resultRules - JLabel explaining how to interpret code output
+ frame - where everything is laid out </type JFrame>
+ uiPanel - contains all intractable swing components; left side of the window </type JPanel>
+ boardPanel - contains the boggle board along with outputted results; right side of the window </type JPanel>
+ buttonPanel - contains all the button components; bottom of uiPanel </type JPanel>
+ headerPanel - contains the title and subtitle; top of window </type JPanel>
+ footerPanel - contains some user prompts; bottom of window </type JPanel>
+ input - used by user to enter queries </type JTextField>
+ scramble - used to generate a new board </type JButton>
+ quit - used to exit the program </type JButton>
+ title - contains the title text of the demo </type JLabel>
+ subTitle - contains some user prompts below the main title </type JLabel>
+ isValid - used to output whether the word entered is valid english/on the board </type JLabel>
+ enterRules - prompt on how to enter a query </type JLabel>
+ resultRules - prompt how to interpret code output </type JLabel>
 ================================================================================
  */
 
@@ -34,7 +34,7 @@ import java.io.IOException;
  *  Refer to above for class description and global variable list
  *  @author Wilbur Zhang
  *  @version 1.0
- *  @since 2021-03-25
+ *  @since 2021-03-26
  */
 
 public class boggleWindow extends JFrame {
@@ -45,7 +45,11 @@ public class boggleWindow extends JFrame {
     private static JButton scramble, quit;
     private static JLabel title, subTitle, isValid, enterRules, resultRules;
 
-    public boggleWindow(boggleBoard board) throws IOException, FontFormatException {
+    /**
+     * Constructor initializes variables and creates a window based off of the board given
+     * @param board the current board state with all backend logic </type BoggleBoard>
+     */
+    public boggleWindow(boggleBoard board) {
         //initializing window and configuring properties
         frame = new JFrame("Boggle Assignment");
         frame.setSize(800, 600);
@@ -69,8 +73,8 @@ public class boggleWindow extends JFrame {
         input.setFont(new Font("Helvetica", Font.PLAIN, 16));
         input.addActionListener(new ActionListener() {
             /**
-             *  Gets user query from input field and checks whether it's English & on the board.
-             *  Paints the appropriate for each situation and resets the input field.
+             *  Gets user query and checks whether it's English & on the board.
+             *  Paints the appropriate output for each situation and resets the input field.
              *
              *  List of Local Variables:
              *  s   value of the input entered by user </type String>
@@ -88,10 +92,10 @@ public class boggleWindow extends JFrame {
             }
         });
         scramble = new JButton("Scramble board");
-
         scramble.addActionListener(new ActionListener() {
             /**
-             *  Generates a new board layout when the scramble button is pressed. Resets input/ui and refreshes the panel.
+             *  Generates a new board layout when the scramble button is pressed. Resets input/ui and refreshes the window.
+             *
              *  @param e ActionEvent created when user presses scramble button.
              */
             @Override
@@ -111,11 +115,11 @@ public class boggleWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("User has terminated program.");
+                System.out.println("User has terminated the program.");
                 System.exit(0);
             }
         });
-        //initializing text components for user prompts
+        //initializing JLabel components for user prompts
         title = new JLabel("Wib's Mind Boggling Boggle Game");
         title.setFont(new Font ("Helvetica", Font.BOLD, 32));
         subTitle = new JLabel("<html>Find words that exist either vertically, horizontally, or diagonally<br>All characters need to be in the same direction<html>");
@@ -147,17 +151,18 @@ public class boggleWindow extends JFrame {
         frame.getContentPane().add(uiPanel, BorderLayout.LINE_START);
         frame.getContentPane().add(boardPanel, BorderLayout.LINE_END);
         frame.getContentPane().add(footerPanel, BorderLayout.SOUTH);
-        //finally, show panel to user
+        //finally, show window to user
         frame.setVisible(true);
     }
     /**
      *  A graphical representation of the board as a grid of dice with labels on top.
+     *
      */
     private static class boardDice extends JComponent {
         int x, y, rowNum, colNum;
         String [][] labels;
         /**
-         * Class constructor creates a board starting at top left corner at specified coordinates.
+         * Class constructor initializes the graphical component starting at top left corner at specified coordinates.
          * @param x         x-coordinate of top left corner
          * @param y         y-coordinate of top left corner
          * @param labels    values to be shown on the face of all 36 dice
@@ -177,7 +182,7 @@ public class boggleWindow extends JFrame {
          *  r   loops through all the rows of the board grid </type int>
          *  c   loops through all the columns of the board grid </type int>
          *
-         *  @param g used to paint all the sections of the board
+         *  @param g Graphics2D object used to paint all the sections of the board
          */
         @Override
         public void paintComponent(Graphics g) {
